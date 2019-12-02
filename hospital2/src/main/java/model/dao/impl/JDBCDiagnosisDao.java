@@ -112,13 +112,5 @@ public class JDBCDiagnosisDao implements DiagnosisDao{
 		return diagnosis;
 	}
 	
-	@Override
-	public void changeDoctorInDiagnosis(Patient patient, int doctor_id) throws SQLException {
-		String query = "Update diagnosis SET doctor_id = ? WHERE (patient_id = ?);";
-		PreparedStatement ps = connection.prepareStatement(query);
-		ps.setInt(1, doctor_id);
-		ps.setInt(2, patient.getId());
-		ps.executeUpdate();
-	}
 
 }

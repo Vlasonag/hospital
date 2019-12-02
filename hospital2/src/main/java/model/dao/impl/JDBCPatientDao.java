@@ -124,11 +124,16 @@ public class JDBCPatientDao implements PatientDao{
 	}
 
 	@Override
-	public void changeDoctorInPatient(Patient patient, int doctor_id) throws SQLException {
+	public void changeDoctorInPatientAndDiagnosis(Patient patient, int doctor_id) throws SQLException {
 		String query = "Update patient SET doctor_id = ? WHERE (id = ?);";
 		PreparedStatement ps = connection.prepareStatement(query);
 		ps.setInt(1, doctor_id);
 		ps.setInt(2, patient.getId());
 		ps.executeUpdate();
+		String query1 = "Update diagnosis SET doctor_id = ? WHERE (patient_id = ?);";
+		PreparedStatement ps1 = connection.prepareStatement(query1);
+		ps1.setInt(1, doctor_id);
+		ps1.setInt(2, patient.getId());
+		ps1.executeUpdate();
 	}
 }

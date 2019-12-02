@@ -58,9 +58,7 @@ public class CreateWorkerService {
 		
 		DaoFactory factory = DaoFactory.getInstance();
 		PatientDao dao1 = factory.createPatientDao();
-		dao1.changeDoctorInPatient(patient, doctor_id);
-		DiagnosisDao dao2 = factory.createDiagnosisDao();
-		dao2.changeDoctorInDiagnosis(patient, doctor_id);
+		dao1.changeDoctorInPatientAndDiagnosis(patient, doctor_id);
 		
 	}
 	

@@ -66,8 +66,8 @@ public class JDBCUserDao implements UserDao{
 	@Override
 	public User getUserByLogin(String login) {
 		User user = null;
-		login = "'" + login + "'";
-		try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM user WHERE login=" + login )){
+		try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM user WHERE login= ?;")){
+			ps.setString(1, login);
 			ResultSet rs = ps.executeQuery();
 			while ( rs.next() ){
 				user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), ROLE.valueOf(rs.getString(6)));
@@ -99,7 +99,7 @@ public class JDBCUserDao implements UserDao{
 	@Override
 	public List<User> getListOfDoctors() {
 		List<User> listOfDoctors = new ArrayList<>();
-		try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM user WHERE role = 'DOCTOR';")){
+		try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM user WHERE role = 'ROLE_DOCTOR';")){
 			ResultSet rs = ps.executeQuery();
 			while ( rs.next() ){
 				listOfDoctors.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), ROLE.valueOf(rs.getString(6))));

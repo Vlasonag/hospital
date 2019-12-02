@@ -23,20 +23,29 @@ public class JDBCNoteDao implements NoteDao{
         this.connection = connection;
     }	
 	@Override
-	public void create(Note entity) {
+	public void create(Note entity, int user_id, int patient_id) {
 		
 		String query = "INSERT INTO note (worker_id, diagnosis_id, commentary, date) VALUES (?, ?, ?, ?);";
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			connection.setAutoCommit(false);
 			ps.setInt(1, entity.getWorker_id());
 			ps.setInt(2, entity.getDiagnosis_id());
 			ps.setString(3, entity.getCommentary());
 			ps.setTimestamp(4, entity.getDate());
 			ps.executeUpdate();
+			
+			query = "INSERT INTO user_patient (user_id, patient_id) VALUES (?, ?);";
+			PreparedStatement ps1 = connection.prepareStatement(query);
+			ps1.setInt(1, user_id);
+			ps1.setInt(2, patient_id);
+			ps1.executeUpdate();
+			connection.commit();
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-        }		
-	}
+			catch (Exception e) {
+				e.printStackTrace();
+	        }
+		}	
 
 	@Override
 	public Note findById(int id) {
@@ -140,30 +149,6 @@ public class JDBCNoteDao implements NoteDao{
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
-	public void createRelationUser_Patient(int user_id, int patient_id) {
-		String query = "INSERT INTO user_patient (user_id, patient_id) VALUES (?, ?);";
-		try (PreparedStatement ps = connection.prepareStatement(query)) {
-			ps.setInt(1, user_id);
-			ps.setInt(2, patient_id);
-			ps.executeUpdate();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-        }
-	}
-	/*@Override
-	public void createRelationDiagnosis_Note(int diagnosis_id, Note note) {
-		String query = "INSERT INTO diagnosis_note (diagnosis_id, note_id) VALUES (?, ?);";
-		try (PreparedStatement ps = connection.prepareStatement(query)) {
-			ps.setInt(1, diagnosis_id);
-			ps.setInt(2, note.getId());
-			ps.executeUpdate();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-        }		
-	}*/
 	@Override
 	public Note findNoteByDate(Timestamp date) {
 		String query = "SELECT * FROM note WHERE date = ?";
@@ -272,5 +257,10 @@ public class JDBCNoteDao implements NoteDao{
 			e.printStackTrace();
         }
 		return listOfNotes;
+	}
+	@Override
+	public void create(Note entity) throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -22,6 +22,7 @@ public class SignInCommand implements Command{
         final HttpSession session = request.getSession();
         if(signInService.isUserExist(login, password)) {
         	User user = signInService.getUserByLogin(login);
+        	System.out.println(user);
         	session.setAttribute("ROLE", user.getRole());
         	session.setAttribute("user_id", Integer.toString(user.getId()));
         	logger.info("Пользователь, id = " + request.getSession().getAttribute("user_id") + 

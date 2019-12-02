@@ -39,10 +39,7 @@ public class FindDiagnosisService {
 		DaoFactory factory = DaoFactory.getInstance();
 	    NoteDao dao = factory.createNoteDao();
 	    Note note = new Note(worker_id, diagnosis_id, commentary, date);
-	    dao.create(note);
-	    dao.createRelationUser_Patient(worker_id, patient_id);
-	    note = dao.findNoteByDate(date);
-	    /*dao.createRelationDiagnosis_Note(diagnosis_id, note);*/
+	    dao.create(note, worker_id, patient_id);
 	}
 	
 	public void editDiagnosisByPatientId(int patient_id, Diagnosis diagnosis) {

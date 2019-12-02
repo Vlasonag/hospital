@@ -10,5 +10,5 @@ public interface PatientDao extends GenericDao<Patient>{
 		void wirePatientAndDiagnosis(int patient_id, int diagnosis_id);
 		List<Patient> getAllPatientsInHospital();
 		void dischargePatientById(int id);
-		void changeDoctorInPatient(Patient patient, int doctor_id) throws SQLException;
+		void changeDoctorInPatientAndDiagnosis(Patient patient, int doctor_id) throws SQLException;
 	}
