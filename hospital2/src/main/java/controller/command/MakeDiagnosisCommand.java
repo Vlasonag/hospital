@@ -29,16 +29,20 @@ public class MakeDiagnosisCommand implements Command{
 				final String procedures = request.getParameter("procedures");
 				final String medicines = request.getParameter("medicines");
 				final String operation = request.getParameter("operation");
-				final int patient_id = makeDiagnosisService.findPatientIdByRoomNameSurname(room, name, surname);
-				final Diagnosis diagnosis = makeDiagnosisService.getDiagnosisByPatientId(patient_id);
+				
+				
+				
 				if(makeDiagnosisService.isRoomBusy(room)) {
 					request.setAttribute("msg1", "Room is busy");
 					return "make_diagnosis_page.jsp";
 				}
 				makeDiagnosisService.createPatient(room, name, surname, doctor_id);
 				final Patient patient = makeDiagnosisService.getPatientByRoomNameSurname(room, name, surname);
+				
 				makeDiagnosisService.createDiagnosis(description, conclusion, procedures, 
 													medicines, operation, doctor_id, patient.getId());
+				final int patient_id = makeDiagnosisService.findPatientIdByRoomNameSurname(room, name, surname);
+				final Diagnosis diagnosis = makeDiagnosisService.getDiagnosisByPatientId(patient_id);
 				makeDiagnosisService.wirePatientAndDiagnosis(patient_id, diagnosis.getId());
 				logger.info("Пользователь, id = " + request.getSession().getAttribute("user_id") + 
 						" создал диагноз, diagnosis_id = " + diagnosis.getId());

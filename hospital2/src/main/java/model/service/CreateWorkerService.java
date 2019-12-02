@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import model.dao.DaoFactory;
-import model.dao.DiagnosisDao;
 import model.dao.PatientDao;
 import model.dao.UserDao;
 import model.entity.Patient;

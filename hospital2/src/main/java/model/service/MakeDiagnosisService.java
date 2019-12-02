@@ -14,7 +14,7 @@ public class MakeDiagnosisService {
 	
 	public void createPatient(int room, String name, String surname, int doctor_id) throws SQLException {
 		
-		DaoFactory factory = DaoFactory.getInstance();		
+		DaoFactory factory = DaoFactory.getInstance();	
 	    PatientDao dao = factory.createPatientDao();
 	    Patient p = new Patient(room, name, surname, doctor_id);
 	    dao.create(p);

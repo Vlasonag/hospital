@@ -8,7 +8,6 @@ import java.util.List;
 
 import model.dao.DiagnosisDao;
 import model.entity.Diagnosis;
-import model.entity.Patient;
 
 public class JDBCDiagnosisDao implements DiagnosisDao{
 	
@@ -20,11 +19,16 @@ public class JDBCDiagnosisDao implements DiagnosisDao{
 	
     @Override
 	public void create(Diagnosis entity) {
-		String query = "INSERT INTO diagnosis (description, conclusion, procedures, medicines, operations, patient_id, doctor_id) "
-				+ "VALUES ('" + entity.getDescription() + "', '" + entity.getConclusion() + 
-				"', '" + entity.getProcedures() + "', '" + entity.getMedicines() + "', '" + 
-				entity.getOperations() + "', '" + entity.getPatient_id() + "', '" + entity.getDoctor_id() + "')";
+		String query = "INSERT INTO diagnosis (description, conclusion, procedures, medicines, operations, patient_id, doctor_id)"
+																									+ " VALUES (?, ?, ?, ?, ?, ?, ?);";
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			ps.setString(1, entity.getDescription());
+			ps.setString(2, entity.getConclusion());
+			ps.setString(3, entity.getProcedures());
+			ps.setString(4, entity.getMedicines());
+			ps.setString(5, entity.getOperations());
+			ps.setInt(6, entity.getPatient_id());
+			ps.setInt(7, entity.getDoctor_id());
 			ps.executeUpdate();
 		}
 		catch (Exception e) {
@@ -34,6 +38,7 @@ public class JDBCDiagnosisDao implements DiagnosisDao{
 
 	@Override
 	public Diagnosis findById(int id) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -102,7 +107,6 @@ public class JDBCDiagnosisDao implements DiagnosisDao{
 		Diagnosis diagnosis = null;
 		String query = "SELECT * FROM diagnosis WHERE patient_id = ? AND doctor_id = ?;";
 		PreparedStatement ps = connection.prepareStatement(query);
-			System.out.println(patiend_id +  "    "+ doctor_id);
 			ps.setInt(1, patiend_id);
 			ps.setInt(2, doctor_id);
 			ResultSet rs = ps.executeQuery();

@@ -125,6 +125,7 @@ public class JDBCPatientDao implements PatientDao{
 
 	@Override
 	public void changeDoctorInPatientAndDiagnosis(Patient patient, int doctor_id) throws SQLException {
+		connection.setAutoCommit(false);
 		String query = "Update patient SET doctor_id = ? WHERE (id = ?);";
 		PreparedStatement ps = connection.prepareStatement(query);
 		ps.setInt(1, doctor_id);
@@ -135,5 +136,7 @@ public class JDBCPatientDao implements PatientDao{
 		ps1.setInt(1, doctor_id);
 		ps1.setInt(2, patient.getId());
 		ps1.executeUpdate();
+		connection.commit();
+		connection.setAutoCommit(true);
 	}
 }

@@ -41,10 +41,12 @@ public class JDBCNoteDao implements NoteDao{
 			ps1.setInt(2, patient_id);
 			ps1.executeUpdate();
 			connection.commit();
+			connection.setAutoCommit(true);
 		}
 			catch (Exception e) {
 				e.printStackTrace();
 	        }
+		
 		}	
 
 	@Override
