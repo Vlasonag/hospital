@@ -17,17 +17,19 @@ public class FindDiagnosisCommand implements Command{
 	
 	@Override
 	public String execute(HttpServletRequest request) {
+		
 		ROLE role = (ROLE)request.getSession().getAttribute("ROLE");
+		
 		if(role.toString().equals("ROLE_DOCTOR")) {
-			try{
+			try {
 				final int room = Integer.parseInt(request.getParameter("room"));
 				final String name = request.getParameter("name");
 				final String surname = request.getParameter("surname");
 				final int patient_id = findDiagnosisService.findPatientIdByRoomNameSurname(room, name, surname);
 				final int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
 				Diagnosis diagnosis = findDiagnosisService.findDiagnosisByPatientIdAndDoctorId(patient_id, user_id);
-				System.out.println(diagnosis);
 				Patient patient = findDiagnosisService.findPatientByRoomNameSurname(room, name, surname);
+				
 				request.setAttribute("diagnosis", diagnosis);
 				request.setAttribute("patient", patient);
 				
@@ -38,6 +40,7 @@ public class FindDiagnosisCommand implements Command{
 				return "make_diagnosis_page.jsp";
 			}
 			catch(Exception e) {
+				
 				logger.info("Пользователь, id = " + request.getSession().getAttribute("user_id") + 
 						" не удалось найти пациента");
 				request.setAttribute("msg", "Patient not found");

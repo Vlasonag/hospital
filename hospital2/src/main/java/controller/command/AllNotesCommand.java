@@ -17,15 +17,18 @@ public class AllNotesCommand implements Command{
 	
 	@Override
 	public String execute(HttpServletRequest request) {
+		
 		request.getSession().setAttribute("state", "1");
 		int page = 1;
         int recordsPerPage = 2;
         List<Note> listOfNotes = findNotesService.findAllNotes();
+        int noOfRecords  = listOfNotes.size();
+		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+		
         if(request.getParameter("page") != null) {
         	page = Integer.parseInt(request.getParameter("page"));
         }
-        int noOfRecords  = findNotesService.findAllNotes().size();
-		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+        
 		listOfNotes = findNotesService.findAllForPage((page-1), recordsPerPage, listOfNotes);
 		
 		request.setAttribute("listOfNotes", listOfNotes);

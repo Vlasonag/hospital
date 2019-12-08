@@ -18,10 +18,12 @@ public class ChangeDoctorFormCommand implements Command{
 	
 	@Override
 	public String execute(HttpServletRequest request) {
+		
 		ROLE role = (ROLE)request.getSession().getAttribute("ROLE");
+		
 		if(role.toString().equals("ROLE_ADMIN")) {
+			
 			List<User> listOfDoctors = cws.getListOfDoctors();
-			System.out.println(listOfDoctors);
 			request.setAttribute("listOfDoctors", listOfDoctors);
 			return "change_doctor.jsp";
 		}

@@ -20,9 +20,12 @@ public class SortAllNotesByDateCommand implements Command{
 	public String execute(HttpServletRequest request) {
 		
 		ROLE role = (ROLE)request.getSession().getAttribute("ROLE");
+		
 		if(!role.toString().equals("ROLE_UNKNOWN")) { 
+			
 			List<Note> listOfNotes = fns.findAllNotes();
 			String state = request.getSession().getAttribute("state").toString();
+			
 			if(state.equals("1")) {
 				listOfNotes = fns.sortNoteListByDate(listOfNotes);
 				int page = 1;
@@ -40,6 +43,7 @@ public class SortAllNotesByDateCommand implements Command{
 				request.setAttribute("sort", "_sorted_by_date");
 				return "journal_page.jsp";
 			}
+			
 			if(state.equals("0")) {
 				listOfNotes = fns.sortNoteListByDateReverse(listOfNotes);
 				int page = 1;
@@ -57,9 +61,7 @@ public class SortAllNotesByDateCommand implements Command{
 				request.setAttribute("sort", "_sorted_by_date");
 				return "journal_page.jsp"; 
 			}
-			else {
-				return "main_page.jsp";
-			}
+			else {return "main_page.jsp";}
 		}
 		else {return "login_page.jsp";}
 	}

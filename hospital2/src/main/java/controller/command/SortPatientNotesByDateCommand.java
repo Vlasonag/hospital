@@ -11,7 +11,8 @@ import model.enumerations.ROLE;
 import model.service.FindNotesService;
 
 public class SortPatientNotesByDateCommand implements Command{
-FindNotesService fns;
+	
+	FindNotesService fns;
 	
 	public SortPatientNotesByDateCommand(FindNotesService fns) {
 		this.fns = fns;
@@ -19,22 +20,24 @@ FindNotesService fns;
 	
 	@Override
 	public String execute(HttpServletRequest request) {
+		
 		ROLE role = (ROLE)request.getSession().getAttribute("ROLE");
+		
 		if(!role.toString().equals("ROLE_UNKNOWN")) { 
+			
 			final int room = Integer.parseInt(request.getParameter("room"));
 			final String name = request.getParameter("name");
 			final String surname = request.getParameter("surname");
 			
 			Patient patient = fns.getPatientByRoomNameSurname(room, name, surname);
 			List<Note> listOfNotes;
-			try {
-				listOfNotes = fns.findAllByPatient(patient);
-			} catch (SQLException e) {
-				return "main_page.jsp";
-			}
+			try {listOfNotes = fns.findAllByPatient(patient);}
+			catch (SQLException e) {return "main_page.jsp";}
 			
 			String state = request.getParameter("state");
+			
 			if(state.equals("1")) {
+				
 				listOfNotes = fns.sortNoteListByDate(listOfNotes);
 				request.setAttribute("patient", patient);
 				request.setAttribute("listOfNotes", listOfNotes);
@@ -42,16 +45,16 @@ FindNotesService fns;
 				
 				return "journal_find_page_result.jsp";
 			}
+			
 			if(state.equals("0")) {
+				
 				listOfNotes = fns.sortNoteListByDateReverse(listOfNotes);
 				request.setAttribute("patient", patient);
 				request.setAttribute("listOfNotes", listOfNotes);
 				request.setAttribute("state", "1");
 				return "journal_find_page_result.jsp";
 			}
-			else {
-				return "main_page.jsp";
-			}
+			else {return "main_page.jsp";}
 		}
 		else {return "login_page.jsp";}
 		

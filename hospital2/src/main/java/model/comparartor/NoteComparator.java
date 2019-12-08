@@ -14,12 +14,9 @@ public class NoteComparator implements Comparator<Note>{
 	public int compare(Note a, Note b) {
 		long t1 = a.getDate().getTime();
 	    long t2 = b.getDate().getTime();
-	    if(t2 > t1)
-            return 1;
-	    else if(t1 > t2)
-            return -1;
-	    else
-            return 0;
+	    if(t2 > t1) {return 1;}
+	    else if(t1 > t2) {return -1;}
+	    else {return 0;}
 		
 	}
 

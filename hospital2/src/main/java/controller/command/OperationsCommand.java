@@ -9,6 +9,7 @@ public class OperationsCommand implements Command{
 
 	@Override
 	public String execute(HttpServletRequest request) {
+		
 		final HttpSession session = request.getSession();
 		ROLE role = (ROLE)session.getAttribute("ROLE");
 		

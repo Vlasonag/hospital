@@ -12,7 +12,8 @@ public abstract class DaoFactory {
 	public abstract DiagnosisDao createDiagnosisDao();
 	public abstract NoteDao createNoteDao();
 	
-    public static DaoFactory getInstance(){
+    public static DaoFactory getInstance() {
+    	
         if( daoFactory == null ) {
             synchronized (DaoFactory.class) {
                 if(daoFactory == null) {

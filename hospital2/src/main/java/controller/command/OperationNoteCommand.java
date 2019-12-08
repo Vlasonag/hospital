@@ -11,7 +11,8 @@ import model.enumerations.ROLE;
 import model.service.FindDiagnosisService;
 
 public class OperationNoteCommand implements Command{
-FindDiagnosisService findDiagnosisService;
+	
+	FindDiagnosisService findDiagnosisService;
 	
 	public OperationNoteCommand(FindDiagnosisService findDiagnosisService) {
 		this.findDiagnosisService = findDiagnosisService;
@@ -19,7 +20,9 @@ FindDiagnosisService findDiagnosisService;
 	
 	@Override
 	public String execute(HttpServletRequest request) {
+		
 		ROLE role = (ROLE)request.getSession().getAttribute("ROLE");
+		
 		if(role.toString().equals("ROLE_DOCTOR")) { 
 			try {
 				final int worker_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
@@ -28,18 +31,18 @@ FindDiagnosisService findDiagnosisService;
 				final String surname = request.getParameter("surname");
 				final String commentary = request.getParameter("commentary");
 				int patient_id = findDiagnosisService.findPatientIdByRoomNameSurname(room, name, surname); 
+				
 				LocalDateTime now = LocalDateTime.now();
 				Timestamp sqlNow = Timestamp.valueOf(now);
-				sqlNow.toInstant().minus(Duration.ofHours(3));
+				sqlNow.toInstant().minus(Duration.ofHours(3));// -3 часовой пояс mySQL
 				Diagnosis diagnosis = findDiagnosisService.findDiagnosisByPatientIdAndDoctorId(patient_id, worker_id);
 				findDiagnosisService.createNote(worker_id, diagnosis.getId(), commentary, sqlNow, patient_id);
+				
 				logger.info("Пользователь, id = " + request.getSession().getAttribute("user_id") + 
 						" создал запись: \"" + commentary + "\" по операции, diagnosis_id = " + diagnosis.getId());
 				return "operations_page.jsp";
 			}
-			catch(Exception e) {
-				return "operations_page.jsp";
-			}
+			catch(Exception e) {return "operations_page.jsp";}
 		}
 		else{return "forbidden_page.jsp";}
 	}

@@ -111,7 +111,5 @@ public class Servlet extends HttpServlet {
         request.getRequestDispatcher(page).forward(request,response);
         
         logger.info("Пользователь, id = " + request.getSession().getAttribute("user_id") + " перешел на " + page);
-
-        
 	}
 }

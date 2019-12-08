@@ -69,9 +69,10 @@ public class JDBCDiagnosisDao implements DiagnosisDao{
 	@Override
 	public Diagnosis findDiagnosisByPatientId(int id) {
 		Diagnosis diagnosis = null;
-		String idStr = "'" + id + "'";
-		try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM diagnosis WHERE patient_id=" + idStr )){
+		try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM diagnosis WHERE patient_id= ?")){
+			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
+			
 			while ( rs.next() ){
 				diagnosis = new Diagnosis(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), 
 												rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8));
@@ -85,7 +86,6 @@ public class JDBCDiagnosisDao implements DiagnosisDao{
 
 	@Override
 	public void editDiagnosisByPatientId(int patient_id, Diagnosis diagnosis) {
-		System.out.println(patient_id);
 		String query = "UPDATE diagnosis SET description = ?, conclusion = ?, procedures = ?, medicines = ?, operations = ? WHERE (patient_id = ?);";
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
 			ps.setString(1, diagnosis.getDescription());

@@ -7,6 +7,7 @@ public class LogoutCommand implements Command{
 
 	@Override
 	public String execute(HttpServletRequest request) {
+		
 		final HttpSession session = request.getSession();
 		
         session.removeAttribute("user_id");

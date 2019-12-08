@@ -17,7 +17,7 @@
 		<label for="exampleFormControlInput1">Surname</label>
 		<input name="surname" required type="text" class="form-control" value="${surname}" id="exampleFormControlInput1" >
 		<br> 
-        <input type="submit" value="find"> 
+        <input type="submit" value="find"> <c:out value="${msg }"/>
     </form><br>
 				<form style="padding-left: 30px; width: 400px;" method="POST" action="make_operation_note">
 				Operation: <c:out value="${diagnosis.operations}"/> <br> <br>

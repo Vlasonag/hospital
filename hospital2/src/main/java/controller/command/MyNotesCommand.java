@@ -17,9 +17,10 @@ FindNotesService findNotesService;
 	
 	@Override
 	public String execute(HttpServletRequest request) {
-		try{
+		try {
 			int worker_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
 			List<Note> listOfNotes = findNotesService.findAllById(worker_id);
+			
 			request.setAttribute("listOfNotes", listOfNotes);
 			request.setAttribute("state", "1");
 			return "my_journal_page.jsp";

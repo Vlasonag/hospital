@@ -25,17 +25,18 @@ public class DischargePatientCommand implements Command{
 		ROLE role = (ROLE)session.getAttribute("ROLE");
 		
 		if(role.toString().equals("ROLE_ADMIN")) {
+			
 			int id = Integer.parseInt(request.getParameter("patient_id").toString());
 			dps.dischargePatientById(id);
 			List<Patient> listOfPatients = dps.getAllPatientsInHospital();
+			
 			request.setAttribute("listOfPatients", listOfPatients);
+			
 			logger.info("Пользователь, id = " + request.getSession().getAttribute("user_id") + 
 					" выписал пациента, patient_id = " + id);
 			return "discharge_page.jsp";
 		}
-		else {
-			return "forbidden_page.jsp";
-		}
+		else {return "forbidden_page.jsp";}
 	}
 
 }

@@ -16,18 +16,18 @@ public class DischargeCommand implements Command{
 	public DischargeCommand(DischargePatientService dps) {
 		this.dps = dps;
 	}
+	
 	@Override
 	public String execute(HttpServletRequest request) {
+		
 		final HttpSession session = request.getSession();
 		ROLE role = (ROLE)session.getAttribute("ROLE");
 		List<Patient> listOfPatients = dps.getAllPatientsInHospital();
+		
 		request.setAttribute("listOfPatients", listOfPatients);
-		if(role.toString().equals("ROLE_ADMIN")) {
-			return "discharge_page.jsp";
-		}
-		else {
-			return "forbidden_page.jsp";
-		}
+		
+		if(role.toString().equals("ROLE_ADMIN")) {return "discharge_page.jsp";}
+		else {return "forbidden_page.jsp";}
 	}
 
 }

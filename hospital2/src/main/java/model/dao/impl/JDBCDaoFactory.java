@@ -42,9 +42,6 @@ public class JDBCDaoFactory extends DaoFactory{
                     "root" ,
                     "root" );
             
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        
+        } catch (SQLException e) {throw new RuntimeException(e);} 
     }
 }

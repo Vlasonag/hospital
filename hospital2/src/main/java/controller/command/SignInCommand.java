@@ -20,7 +20,9 @@ public class SignInCommand implements Command{
         final String login = request.getParameter("login");
         final String password = request.getParameter("password"); 
         final HttpSession session = request.getSession();
+        
         if(signInService.isUserExist(login, password)) {
+        	
         	User user = signInService.getUserByLogin(login);
         	session.setAttribute("ROLE", user.getRole());
         	session.setAttribute("user_id", Integer.toString(user.getId()));
@@ -28,9 +30,7 @@ public class SignInCommand implements Command{
 					" вошел в систему");
         	return "main_page.jsp";
         }
-        else {
-        	return "login_page.jsp";
-        }
+        else {return "login_page.jsp";}
 		
 	}
 
